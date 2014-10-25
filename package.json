@@ -4,7 +4,8 @@
   "description": "Dummy image for frontend development",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node scripts/download-binary.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +24,10 @@
   "homepage": "https://github.com/claudetech/node-dummy-image",
   "dependencies": {
     "async": "^0.9.0",
-    "canvas": "^1.1.6",
+    "fs-extra": "^0.12.0",
     "lodash": "^2.4.1",
-    "smartcrop": "0.0.1"
+    "request": "^2.46.0",
+    "tar": "^1.0.1",
+    "unzip": "^0.1.11"
   }
 }
