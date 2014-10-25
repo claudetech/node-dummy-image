@@ -1,5 +1,5 @@
 {
-  "name": "dummy-img",
+  "name": "dummy-image",
   "version": "0.1.0",
   "description": "Dummy image for frontend development",
   "main": "lib/index.js",
