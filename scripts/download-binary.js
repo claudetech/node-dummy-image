@@ -69,21 +69,14 @@ function download(name, cb) {
             var pipe = res;
             if (isLinux()) {
               pipe = pipe.pipe(zlib.createGunzip());
+              pipe = pipe.pipe(tar.Extract({path: TMP_DIR}));
+            } else {
+              pipe = pipe.pipe(unzip.Extract({path: TMP_DIR}));
             }
-            pipe.pipe(out).on('finish', function () {
+            pipe.on('close', function () {
               cb(null, outputName);
             });
          });
-}
-
-function extract(outputName, cb) {
-  var extracter = isLinux() ? tar : unzip;
-  fs.createReadStream(outputName)
-    .pipe(extracter.Extract({path: path.join(TMP_DIR)}))
-    .on('error', cb)
-    .on('end', function () {
-      cb(null, outputName);
-    });
 }
 
 function move(outputName, cb) {
@@ -100,6 +93,10 @@ function clean(cb) {
   fs.remove(TMP_DIR, cb);
 }
 
+function fixPermission(cb) {
+  fs.chmod(path.join(BIN_DIR, 'cropper'), '755', cb);
+}
+
 function run() {
   async.waterfall([
     purge,
@@ -107,9 +104,9 @@ function run() {
     makeTmpDir,
     getName,
     download,
-    extract,
     move,
     clean,
+    fixPermission,
   ], function (err) {
     if (err) {
       console.warn('failed to download executable. this will not work properly' + err);
