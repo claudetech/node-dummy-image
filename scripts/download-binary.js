@@ -77,7 +77,7 @@ function download(name, cb) {
 }
 
 function extract(outputName, cb) {
-  var extracter = isLinux() ? tar : zip;
+  var extracter = isLinux() ? tar : unzip;
   fs.createReadStream(outputName)
     .pipe(extracter.Extract({path: path.join(TMP_DIR)}))
     .on('error', cb)
